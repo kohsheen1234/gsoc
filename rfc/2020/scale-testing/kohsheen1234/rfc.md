@@ -40,10 +40,11 @@ This contribution aims to completely automate the scale test framework, to ensur
 
 Create a script file which performs the following actions:
 1. Create a GKE cluster
-1. Check if kubectl binary is available
-2. Check if linkerd binary is available
-3. Check if connection to cluster can be established via kubectl
-4. Check if Linkerd control plane is installed
+2. Check if `kubectl binary` is available
+3. Check if `linkerd binary` is available
+4. Check if connection to cluster can be established via kubectl
+5. Install *Linkerd* on the cluster
+6. Check if *Linkerd control plane* is installed
 
 using a service mesh will have a cluster consume more resources for its operation, taking resources away from business logic. In order to better understand this impact we measure both CPU load of, and memory consumed by the service mesh control plane, and the service mesh's application proxy sidecars. 
 
@@ -227,6 +228,8 @@ As specified in the scale testing issue [#3692](https://github.com/linkerd/linke
           - name: slow-cooker
             containerPort: 9998
   ```
+
+Deploy load generator as a pod in the cluster, and reserve one cluster node for load generation / round-trip latency measurement, while using the remaining four nodes to run a configurable number of applications. In order to maintain sufficient statistical spread, the "load generator" node is picked randomly for each run.
 
 ---
 
